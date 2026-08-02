@@ -269,7 +269,7 @@
       <div class="simstats">
         <div class="muted" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase">Simulated house edge</div>
         <div class="big"><span id="simEdge">—</span></div>
-        <div class="tgt">target <span id="simTarget">6.48%</span> · <span id="simCount">0</span> hands · <span id="simMode">Standoff</span>, optimal play</div>
+        <div class="tgt">target <span id="simTarget">3.24%</span> · <span id="simCount">0</span> hands · <span id="simMode">Standoff</span>, optimal play</div>
       </div>
     </div>
   </div>
@@ -284,16 +284,18 @@
     <p>Place an <b>Ante</b>. You and the House each receive <b>two pieces</b> — yours face-up, the House's hidden.
     Looking at your hand, choose to <b>Advance</b> (match your Ante) or <b>Resign</b> (forfeit it).</p>
     <p>The House then reveals and must <b>qualify</b> with a <b>Rook-high hand or a pair</b>. A <b>pair beats</b> two
-    different pieces; otherwise the higher piece wins, ties broken by the second piece. <b>Ties go to the House.</b></p>
-    <p><b>Optimal strategy is one line:</b> Advance with any pair, or a Queen-high hand or better. Otherwise Resign.</p>
+    different pieces; otherwise the higher piece wins, ties broken by the second piece. <b>On a tie the House keeps
+    your Ante and returns your Advance.</b></p>
+    <p><b>Optimal strategy:</b> Advance with any pair, a Queen-high hand or better, or Rook–Bishop. Otherwise Resign.</p>
     <h2 class="sub">Paytable</h2>
     <table>
       <tr><td>House does not qualify</td><td>Ante pays 1:1, Advance pushes</td></tr>
       <tr><td>You beat a qualifying House</td><td>Ante & Advance pay 1:1</td></tr>
+      <tr><td>Tie</td><td>House keeps Ante, Advance returns</td></tr>
       <tr><td>Twin Pieces — any pair</td><td>4 : 1</td></tr>
       <tr><td>Twin Kings — pair of Kings</td><td>Progressive jackpot</td></tr>
     </table>
-    <p style="font-size:12px;color:#b9ad84">House edge 6.48% per ante · 3.89% element of risk · you fold ~1 in 3 hands.</p>
+    <p style="font-size:12px;color:#b9ad84">House edge 3.24% per ante · 1.88% element of risk · you fold ~28% of hands.</p>
   </div>
   <div id="rulesDuel" class="hide">
     <h2>♚ Classic Duel — how to play</h2>
@@ -340,7 +342,7 @@
     if(P.pair) return P.hi>H.hi?1:(P.hi<H.hi?-1:0);
     if(P.hi!==H.hi) return P.hi>H.hi?1:-1; if(P.lo!==H.lo) return P.lo>H.lo?1:-1; return 0; }
   const houseQual=H=> H.pair || H.hi>=4;                 // Rook-high or pair
-  const shouldAdvance=P=> P.pair || P.hi>=5;             // pair or Queen-high+
+  const shouldAdvance=P=> P.pair || P.hi>=5 || (P.hi===4&&P.lo===3);  // pair, Queen-high+, or Rook-Bishop
 
   /* ---- sound ---- */
   let ac=null;
@@ -410,8 +412,8 @@
 
   function renderMath(){
     const rows = mode==="standoff" ? [
-      ["House edge (per ante)","6.48%"],["Element of risk","3.89%"],
-      ["You Advance","~66.7%"],["Twin Pieces hold","16.67%"],["Twin Kings / Jackpot","1 in 36"]
+      ["House edge (per ante)","3.24%"],["Element of risk","1.88%"],
+      ["You Advance","~72.2%"],["Twin Pieces hold","16.67%"],["Twin Kings / Jackpot","1 in 36"]
     ] : [
       ["Duel house edge","4.17%"],["Gambit (tie) frequency","16.67%"],
       ["King's Bounty hold","16.67%"],["Twin Kings / Jackpot","1 in 36"]
@@ -480,7 +482,7 @@
     pending={P,tmsg}; phase="decide";
     const rec=shouldAdvance(P)?"Advance":"Resign";
     setVerdict("<span class='tie'>Your move — "+handName(P)+"</span>"+tmsg);
-    setHint("Strategy: Advance on any pair or Queen-high+. This hand → "+rec+".");
+    setHint("Strategy: Advance on a pair, Queen-high+, or Rook-Bishop. This hand → "+rec+".");
     controlsDecide(); renderBank(); renderBets(); renderStats();
   }
   function resolveStandoff(advance){
@@ -500,8 +502,10 @@
       const c=cmpHand(P,H);
       if(c>0){ bank+=A*4; stats.net-=A*2; $("pSq0").classList.add("win"); setPiece("d",0,h1,"captured"); setPiece("d",1,h2,"captured");
         setVerdict("<span class='win'>You win — +₾"+fmt(A*2)+"</span>"+tmsg); sfx.win(); }
+      else if(c===0){ bank+=A; stats.net+=A;                 // tie: House keeps Ante, Advance returned
+        setVerdict("<span class='tie'>Tie ("+handName(H)+") — House keeps the Ante (−₾"+fmt(A)+"), Advance returned</span>"+tmsg); sfx.tie(); }
       else { stats.net+=A*2; $("dSq0").classList.add("lose"); setPiece("p",0,P.a,"captured"); setPiece("p",1,P.b,"captured");
-        setVerdict("<span class='lose'>House "+(c===0?"holds the tie":"wins")+" — −₾"+fmt(A*2)+"</span>"+tmsg); sfx.lose(); }
+        setVerdict("<span class='lose'>House wins — −₾"+fmt(A*2)+"</span>"+tmsg); sfx.lose(); }
     }
     endHand();
   }
@@ -558,14 +562,14 @@
     $("modeStandoff").classList.toggle("on",m==="standoff"); $("modeDuel").classList.toggle("on",m==="duel");
     $("spotsStandoff").classList.toggle("hide",m!=="standoff"); $("spotsDuel").classList.toggle("hide",m!=="duel");
     $("rulesStandoff").classList.toggle("hide",m!=="standoff"); $("rulesDuel").classList.toggle("hide",m!=="duel");
-    $("simMode").textContent=m==="standoff"?"Standoff":"Classic Duel"; $("simTarget").textContent=m==="standoff"?"6.48%":"4.17%";
+    $("simMode").textContent=m==="standoff"?"Standoff":"Classic Duel"; $("simTarget").textContent=m==="standoff"?"3.24%":"4.17%";
     renderSquares(); renderMath(); simReset(); newHand(); }
 
   /* ---- edge simulator (mode-aware) ---- */
   const sparkData=[]; let simAnte=0, simNet=0, simRunning=false, simGen=0;
   const cv=$("spark"), cx=cv.getContext("2d");
   function drawSpark(){ if(!cx) return; const W=cv.width,H=cv.height; cx.clearRect(0,0,W,H);
-    const target=mode==="standoff"?6.481:4.16667, lo=mode==="standoff"?4.5:2.5, hi=mode==="standoff"?8.5:6.0;
+    const target=mode==="standoff"?3.241:4.16667, lo=mode==="standoff"?1.5:2.5, hi=mode==="standoff"?5.5:6.0;
     const y=v=>H-8-((v-lo)/(hi-lo))*(H-16);
     cx.strokeStyle="rgba(159,208,179,.55)"; cx.setLineDash([5,4]); cx.lineWidth=1;
     cx.beginPath(); cx.moveTo(0,y(target)); cx.lineTo(W,y(target)); cx.stroke(); cx.setLineDash([]);
@@ -582,7 +586,7 @@
     simAnte+=1; const p1=draw(),p2=draw(); const P=hand(p1,p2);
     if(!shouldAdvance(P)){ simNet+=1; return; }                  // resign -> house keeps ante
     const h1=draw(),h2=draw(); const H=hand(h1,h2);
-    if(!houseQual(H)) simNet-=1; else { const c=cmpHand(P,H); simNet+= c>0? -2 : 2; }  // tie->house
+    if(!houseQual(H)) simNet-=1; else { const c=cmpHand(P,H); simNet+= c>0? -2 : (c<0? 2 : 1); }  // tie -> House keeps ante (+1)
   }
   function runSim(N){ if(simRunning) return; simRunning=true; const gen=simGen; let done=0; const chunk=25000;
     const step=()=>{ if(gen!==simGen){ simRunning=false; return; }   // cancelled by reset/mode switch
