@@ -40,6 +40,11 @@
   .modes button{font-family:inherit; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; padding:10px 20px;
     background:transparent; color:#cdbf98; border:none; cursor:pointer; transition:background .15s,color .15s}
   .modes button.on{background:linear-gradient(180deg,var(--gold),var(--gold2)); color:#1a1206; font-weight:bold}
+  .paytables{display:flex; gap:6px; justify-content:center; align-items:center; flex-wrap:wrap; margin:0 auto 12px}
+  .paytables .ptlbl{font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#bfae7f; margin-right:4px}
+  .paytables button{font-family:inherit; font-size:11.5px; letter-spacing:.05em; padding:8px 13px; border-radius:9px;
+    border:1px solid var(--line); background:var(--panel); color:#cdbf98; cursor:pointer; transition:background .15s,color .15s,border-color .15s}
+  .paytables button.on{background:rgba(232,193,90,.16); color:var(--gold); border-color:var(--gold); font-weight:bold}
 
   .table{border:1px solid var(--line); border-radius:22px; padding:16px; position:relative; overflow:hidden;
     background:radial-gradient(100% 130% at 50% -10%, rgba(255,255,255,.06), transparent 55%), linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.30));
@@ -169,6 +174,13 @@
     <button id="modeDuel">Classic Duel</button>
   </div>
 
+  <div class="paytables" id="paytables">
+    <span class="ptlbl">Paytable</span>
+    <button id="pt-friendly" data-cfg="friendly">Player-Friendly · 2.78%</button>
+    <button id="pt-standard" data-cfg="standard" class="on">Standard · 3.24%</button>
+    <button id="pt-high" data-cfg="high">High-Hold · 6.48%</button>
+  </div>
+
   <div class="table">
     <div class="prog">
       <div class="top"><span>♚ Twin Kings Jackpot</span><span class="amt" id="jackpot">5,000</span></div>
@@ -280,22 +292,22 @@
 <div class="modal" id="modal"><div class="card">
   <button class="close" id="modalClose">✕</button>
   <div id="rulesStandoff">
-    <h2>♚ Standoff — how to play</h2>
+    <h2>♚ Standoff — how to play <span style="font-size:12px;color:#9fd0b3">(<span id="rName">Standard</span> paytable)</span></h2>
     <p>Place an <b>Ante</b>. You and the House each receive <b>two pieces</b> — yours face-up, the House's hidden.
     Looking at your hand, choose to <b>Advance</b> (match your Ante) or <b>Resign</b> (forfeit it).</p>
-    <p>The House then reveals and must <b>qualify</b> with a <b>Rook-high hand or a pair</b>. A <b>pair beats</b> two
-    different pieces; otherwise the higher piece wins, ties broken by the second piece. <b>On a tie the House keeps
-    your Ante and returns your Advance.</b></p>
-    <p><b>Optimal strategy:</b> Advance with any pair, a Queen-high hand or better, or Rook–Bishop. Otherwise Resign.</p>
+    <p>The House then reveals and must <b>qualify</b> with a <b><span id="rQual">Rook-high or a pair</span></b>. A <b>pair beats</b>
+    two different pieces; otherwise the higher piece wins, ties broken by the second piece.</p>
+    <p><b>Optimal strategy:</b> Advance with <span id="rStrat">a pair, Queen-high+, or Rook-Bishop</span>. Otherwise Resign.</p>
     <h2 class="sub">Paytable</h2>
     <table>
-      <tr><td>House does not qualify</td><td>Ante pays 1:1, Advance pushes</td></tr>
+      <tr><td>House does not qualify</td><td><span id="rNoQ">Ante pays 1:1, Advance pushes</span></td></tr>
       <tr><td>You beat a qualifying House</td><td>Ante & Advance pay 1:1</td></tr>
-      <tr><td>Tie</td><td>House keeps Ante, Advance returns</td></tr>
+      <tr><td>Tie</td><td><span id="rTie">House keeps the Ante, returns your Advance</span></td></tr>
       <tr><td>Twin Pieces — any pair</td><td>4 : 1</td></tr>
       <tr><td>Twin Kings — pair of Kings</td><td>Progressive jackpot</td></tr>
     </table>
-    <p style="font-size:12px;color:#b9ad84">House edge 3.24% per ante · 1.88% element of risk · you fold ~28% of hands.</p>
+    <p style="font-size:12px;color:#b9ad84">House edge <span id="rEdge">3.24% per ante · 1.88% element of risk</span>.
+    Switch paytables with the selector above the table.</p>
   </div>
   <div id="rulesDuel" class="hide">
     <h2>♚ Classic Duel — how to play</h2>
@@ -341,8 +353,24 @@
   function cmpHand(P,H){ if(P.pair!==H.pair) return P.pair?1:-1;
     if(P.pair) return P.hi>H.hi?1:(P.hi<H.hi?-1:0);
     if(P.hi!==H.hi) return P.hi>H.hi?1:-1; if(P.lo!==H.lo) return P.lo>H.lo?1:-1; return 0; }
-  const houseQual=H=> H.pair || H.hi>=4;                 // Rook-high or pair
-  const shouldAdvance=P=> P.pair || P.hi>=5 || (P.hi===4&&P.lo===3);  // pair, Queen-high+, or Rook-Bishop
+  // ---- three certified paytables (Standoff). All verified by enumeration. ----
+  const CONFIGS={
+    friendly:{name:"Player-Friendly", edge:2.78, edgeStr:"2.78%", eor:"1.61%", advStr:"~72%",
+      Q:3, noQ:"push", tie:"houseWins", adv:P=>P.pair||P.hi>=5||(P.hi===4&&P.lo===3),
+      strat:"a pair, Queen-high+, or Rook-Bishop", qualStr:"Bishop-high or a pair",
+      noQStr:"both bets push — you keep your money", tieStr:"House wins the tie"},
+    standard:{name:"Standard", edge:3.24, edgeStr:"3.24%", eor:"1.88%", advStr:"~72%",
+      Q:4, noQ:"pay", tie:"keepAnte", adv:P=>P.pair||P.hi>=5||(P.hi===4&&P.lo===3),
+      strat:"a pair, Queen-high+, or Rook-Bishop", qualStr:"Rook-high or a pair",
+      noQStr:"Ante pays 1:1, Advance pushes", tieStr:"House keeps the Ante, returns your Advance"},
+    high:{name:"High-Hold", edge:6.48, edgeStr:"6.48%", eor:"3.89%", advStr:"~67%",
+      Q:4, noQ:"pay", tie:"houseWins", adv:P=>P.pair||P.hi>=5,
+      strat:"a pair or Queen-high or better", qualStr:"Rook-high or a pair",
+      noQStr:"Ante pays 1:1, Advance pushes", tieStr:"House wins the tie"}
+  };
+  let cfg=CONFIGS.standard;
+  const houseQual=H=> H.pair || H.hi>=cfg.Q;
+  const shouldAdvance=P=> cfg.adv(P);
 
   /* ---- sound ---- */
   let ac=null;
@@ -412,8 +440,8 @@
 
   function renderMath(){
     const rows = mode==="standoff" ? [
-      ["House edge (per ante)","3.24%"],["Element of risk","1.88%"],
-      ["You Advance","~72.2%"],["Twin Pieces hold","16.67%"],["Twin Kings / Jackpot","1 in 36"]
+      ["House edge (per ante)",cfg.edgeStr],["Element of risk",cfg.eor],
+      ["You Advance",cfg.advStr],["Twin Pieces hold","16.67%"],["Twin Kings / Jackpot","1 in 36"]
     ] : [
       ["Duel house edge","4.17%"],["Gambit (tie) frequency","16.67%"],
       ["King's Bounty hold","16.67%"],["Twin Kings / Jackpot","1 in 36"]
@@ -482,7 +510,7 @@
     pending={P,tmsg}; phase="decide";
     const rec=shouldAdvance(P)?"Advance":"Resign";
     setVerdict("<span class='tie'>Your move — "+handName(P)+"</span>"+tmsg);
-    setHint("Strategy: Advance on a pair, Queen-high+, or Rook-Bishop. This hand → "+rec+".");
+    setHint("Strategy: Advance on "+cfg.strat+". This hand → "+rec+".");
     controlsDecide(); renderBank(); renderBets(); renderStats();
   }
   function resolveStandoff(advance){
@@ -495,17 +523,18 @@
     setPiece("d",0,h1,"deal-in"); setPiece("d",1,h2,"deal-in"); setHand("d",handName(H));
     const A=bets.ante;
     if(!houseQual(H)){
-      bank+=A*3; stats.net-=A;                                    // ante pays 1:1, play pushes
-      $("pSq0").classList.add("win");
-      setVerdict("<span class='noq'>House folds ("+handName(H)+") — Ante pays +₾"+fmt(A)+"</span>"+tmsg); sfx.win();
+      if(cfg.noQ==="pay"){ bank+=A*3; stats.net-=A; $("pSq0").classList.add("win");   // ante pays 1:1, play pushes
+        setVerdict("<span class='noq'>House folds ("+handName(H)+") — Ante pays +₾"+fmt(A)+"</span>"+tmsg); sfx.win(); }
+      else { bank+=A*2;                                                                // both bets push
+        setVerdict("<span class='noq'>House folds ("+handName(H)+") — both bets push</span>"+tmsg); }
     } else {
       const c=cmpHand(P,H);
       if(c>0){ bank+=A*4; stats.net-=A*2; $("pSq0").classList.add("win"); setPiece("d",0,h1,"captured"); setPiece("d",1,h2,"captured");
         setVerdict("<span class='win'>You win — +₾"+fmt(A*2)+"</span>"+tmsg); sfx.win(); }
-      else if(c===0){ bank+=A; stats.net+=A;                 // tie: House keeps Ante, Advance returned
+      else if(c===0 && cfg.tie==="keepAnte"){ bank+=A; stats.net+=A;                   // tie: House keeps Ante, Advance returned
         setVerdict("<span class='tie'>Tie ("+handName(H)+") — House keeps the Ante (−₾"+fmt(A)+"), Advance returned</span>"+tmsg); sfx.tie(); }
       else { stats.net+=A*2; $("dSq0").classList.add("lose"); setPiece("p",0,P.a,"captured"); setPiece("p",1,P.b,"captured");
-        setVerdict("<span class='lose'>House wins — −₾"+fmt(A*2)+"</span>"+tmsg); sfx.lose(); }
+        setVerdict("<span class='lose'>House "+(c===0?"takes the tie":"wins")+" — −₾"+fmt(A*2)+"</span>"+tmsg); sfx.lose(); }
     }
     endHand();
   }
@@ -562,14 +591,24 @@
     $("modeStandoff").classList.toggle("on",m==="standoff"); $("modeDuel").classList.toggle("on",m==="duel");
     $("spotsStandoff").classList.toggle("hide",m!=="standoff"); $("spotsDuel").classList.toggle("hide",m!=="duel");
     $("rulesStandoff").classList.toggle("hide",m!=="standoff"); $("rulesDuel").classList.toggle("hide",m!=="duel");
-    $("simMode").textContent=m==="standoff"?"Standoff":"Classic Duel"; $("simTarget").textContent=m==="standoff"?"3.24%":"4.17%";
-    renderSquares(); renderMath(); simReset(); newHand(); }
+    $("simMode").textContent=m==="standoff"?"Standoff":"Classic Duel"; $("simTarget").textContent=m==="standoff"?cfg.edgeStr:"4.17%";
+    $("paytables").classList.toggle("hide",m!=="standoff");
+    renderSquares(); renderMath(); renderRules(); simReset(); newHand(); }
+  function applyCfg(key){ if(phase==="decide"||phase==="gambit") return; cfg=CONFIGS[key];
+    ["friendly","standard","high"].forEach(k=>$("pt-"+k).classList.toggle("on",k===key));
+    $("simTarget").textContent=cfg.edgeStr;
+    renderMath(); renderRules(); simReset(); newHand(); }
+  function renderRules(){
+    if($("rQual")){ $("rQual").textContent=cfg.qualStr; $("rNoQ").textContent=cfg.noQStr;
+      $("rTie").textContent=cfg.tieStr; $("rStrat").textContent=cfg.strat;
+      $("rEdge").textContent=cfg.edgeStr+" per ante · "+cfg.eor+" element of risk"; $("rName").textContent=cfg.name; }
+  }
 
   /* ---- edge simulator (mode-aware) ---- */
   const sparkData=[]; let simAnte=0, simNet=0, simRunning=false, simGen=0;
   const cv=$("spark"), cx=cv.getContext("2d");
   function drawSpark(){ if(!cx) return; const W=cv.width,H=cv.height; cx.clearRect(0,0,W,H);
-    const target=mode==="standoff"?3.241:4.16667, lo=mode==="standoff"?1.5:2.5, hi=mode==="standoff"?5.5:6.0;
+    const target=mode==="standoff"?cfg.edge:4.16667, lo=mode==="standoff"?Math.max(0,cfg.edge-2):2.5, hi=mode==="standoff"?cfg.edge+2.5:6.0;
     const y=v=>H-8-((v-lo)/(hi-lo))*(H-16);
     cx.strokeStyle="rgba(159,208,179,.55)"; cx.setLineDash([5,4]); cx.lineWidth=1;
     cx.beginPath(); cx.moveTo(0,y(target)); cx.lineTo(W,y(target)); cx.stroke(); cx.setLineDash([]);
@@ -586,7 +625,8 @@
     simAnte+=1; const p1=draw(),p2=draw(); const P=hand(p1,p2);
     if(!shouldAdvance(P)){ simNet+=1; return; }                  // resign -> house keeps ante
     const h1=draw(),h2=draw(); const H=hand(h1,h2);
-    if(!houseQual(H)) simNet-=1; else { const c=cmpHand(P,H); simNet+= c>0? -2 : (c<0? 2 : 1); }  // tie -> House keeps ante (+1)
+    if(!houseQual(H)) simNet+= cfg.noQ==="pay"? -1 : 0;          // no-qualify: ante pays or both push
+    else { const c=cmpHand(P,H); simNet+= c>0? -2 : (c<0? 2 : (cfg.tie==="keepAnte"? 1 : 2)); }  // tie per config
   }
   function runSim(N){ if(simRunning) return; simRunning=true; const gen=simGen; let done=0; const chunk=25000;
     const step=()=>{ if(gen!==simGen){ simRunning=false; return; }   // cancelled by reset/mode switch
@@ -614,8 +654,9 @@
   $("modal").onclick=e=>{ if(e.target===$("modal")) $("modal").classList.remove("show"); };
   document.querySelectorAll(".simbtns button[data-n]").forEach(b=> b.onclick=()=>runSim(+b.dataset.n));
   $("simReset").onclick=simReset;
+  document.querySelectorAll(".paytables button[data-cfg]").forEach(b=> b.onclick=()=>applyCfg(b.dataset.cfg));
 
-  renderSquares(); renderTray(); renderBank(); renderJackpot(); renderBets(); renderStats(); renderMath(); controlsBet(); drawSpark();
+  renderSquares(); renderTray(); renderBank(); renderJackpot(); renderBets(); renderStats(); renderMath(); renderRules(); controlsBet(); drawSpark();
 })();
 </script>
 </body>
