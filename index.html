@@ -15,12 +15,9 @@
   body{
     font-family:"Georgia","Times New Roman",serif; color:var(--cream); min-height:100vh; padding:14px 14px 40px;
     display:flex; justify-content:center;
-    background:
-      radial-gradient(130% 90% at 50% -15%, #18604a 0%, var(--felt) 42%, var(--felt2) 100%) fixed;
+    background:radial-gradient(130% 90% at 50% -15%, #18604a 0%, var(--felt) 42%, var(--felt2) 100%) fixed;
   }
   .wrap{width:100%; max-width:960px}
-
-  /* header */
   header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; flex-wrap:wrap}
   .brand{display:flex; align-items:center; gap:12px}
   .brand .crown{font-size:34px; color:var(--gold); text-shadow:0 0 24px rgba(232,193,90,.5); animation:breathe 4s ease-in-out infinite}
@@ -34,23 +31,21 @@
   .bankwrap .amt.flash{animation:amtflash .6s ease}
   @keyframes amtflash{0%{color:var(--gold);transform:scale(1.12)}100%{color:var(--cream);transform:scale(1)}}
   .icons{display:flex; gap:6px}
-  .icons button{
-    width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--panel);
+  .icons button{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--panel);
     color:var(--gold);font-size:16px;cursor:pointer;transition:background .15s,transform .05s}
-  .icons button:hover{background:rgba(232,193,90,.12)}
-  .icons button:active{transform:scale(.94)}
+  .icons button:hover{background:rgba(232,193,90,.12)} .icons button:active{transform:scale(.94)}
 
-  /* table */
-  .table{
-    border:1px solid var(--line); border-radius:22px; padding:16px; position:relative; overflow:hidden;
-    background:
-      radial-gradient(100% 130% at 50% -10%, rgba(255,255,255,.06), transparent 55%),
-      linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.30));
-    box-shadow:inset 0 0 70px rgba(0,0,0,.5), 0 22px 55px rgba(0,0,0,.45);
-  }
+  /* mode toggle */
+  .modes{display:flex; gap:0; justify-content:center; margin:0 auto 12px; border:1px solid var(--line); border-radius:12px; overflow:hidden; width:max-content}
+  .modes button{font-family:inherit; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; padding:10px 20px;
+    background:transparent; color:#cdbf98; border:none; cursor:pointer; transition:background .15s,color .15s}
+  .modes button.on{background:linear-gradient(180deg,var(--gold),var(--gold2)); color:#1a1206; font-weight:bold}
+
+  .table{border:1px solid var(--line); border-radius:22px; padding:16px; position:relative; overflow:hidden;
+    background:radial-gradient(100% 130% at 50% -10%, rgba(255,255,255,.06), transparent 55%), linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.30));
+    box-shadow:inset 0 0 70px rgba(0,0,0,.5), 0 22px 55px rgba(0,0,0,.45)}
   .table:before{content:""; position:absolute; inset:7px; border:1px solid rgba(232,193,90,.16); border-radius:16px; pointer-events:none}
 
-  /* progressive */
   .prog{margin:2px 4px 14px}
   .prog .top{display:flex; align-items:center; justify-content:space-between; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:#d7c893}
   .prog .amt{font-size:20px; color:#fff; letter-spacing:.03em; font-weight:bold}
@@ -59,71 +54,59 @@
   .bar{height:7px; border-radius:6px; margin-top:7px; background:rgba(0,0,0,.35); overflow:hidden; border:1px solid rgba(232,193,90,.2)}
   .bar>i{display:block; height:100%; width:22%; border-radius:6px; background:linear-gradient(90deg,var(--gold3),var(--gold)); box-shadow:0 0 14px rgba(232,193,90,.6); transition:width .5s ease}
 
-  /* arena */
   .arena{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:10px; margin:2px 0 6px}
   .side{text-align:center}
   .side .role{font-size:11px; letter-spacing:.26em; text-transform:uppercase; color:#cdbf98; margin-bottom:8px}
-  .square{
-    width:140px; height:140px; margin:0 auto; border-radius:18px; position:relative;
-    display:flex; align-items:center; justify-content:center;
-    background:repeating-conic-gradient(from 0deg, rgba(255,255,255,.055) 0 90deg, rgba(0,0,0,.16) 90deg 180deg) 0 0/46px 46px;
-    border:1px solid var(--line); box-shadow:inset 0 0 28px rgba(0,0,0,.55);
-    transition:box-shadow .3s, border-color .3s;
-  }
-  .square.win{border-color:var(--green); box-shadow:inset 0 0 28px rgba(0,0,0,.55), 0 0 26px rgba(70,184,119,.55)}
-  .square.lose{border-color:var(--red); box-shadow:inset 0 0 28px rgba(0,0,0,.55), 0 0 26px rgba(208,83,72,.4)}
-  .piece{font-size:88px; line-height:1; filter:drop-shadow(0 5px 7px rgba(0,0,0,.6))}
-  .piece.player{color:var(--gold)} .piece.dealer{color:#efe9d8}
-  .piece.empty{opacity:.13; color:#fff}
+  .squares{display:flex; gap:8px; justify-content:center}
+  .square{border-radius:16px; position:relative; display:flex; align-items:center; justify-content:center;
+    background:repeating-conic-gradient(from 0deg, rgba(255,255,255,.055) 0 90deg, rgba(0,0,0,.16) 90deg 180deg) 0 0/44px 44px;
+    border:1px solid var(--line); box-shadow:inset 0 0 26px rgba(0,0,0,.55); transition:box-shadow .3s, border-color .3s}
+  .square.big{width:132px; height:132px} .square.sm{width:104px; height:104px}
+  .square.win{border-color:var(--green); box-shadow:inset 0 0 26px rgba(0,0,0,.55), 0 0 24px rgba(70,184,119,.55)}
+  .square.lose{border-color:var(--red); box-shadow:inset 0 0 26px rgba(0,0,0,.55), 0 0 24px rgba(208,83,72,.4)}
+  .piece{line-height:1; filter:drop-shadow(0 5px 7px rgba(0,0,0,.6))}
+  .square.big .piece{font-size:84px} .square.sm .piece{font-size:62px}
+  .piece.player{color:var(--gold)} .piece.dealer{color:#efe9d8} .piece.empty{opacity:.13; color:#fff}
+  .piece.back{opacity:.5; color:var(--gold); font-size:52px!important}
   .piece.deal-in{animation:dealin .4s cubic-bezier(.2,.8,.25,1)}
-  @keyframes dealin{0%{transform:translateY(-26px) scale(.5) rotate(-8deg); opacity:0}100%{transform:none; opacity:1}}
+  @keyframes dealin{0%{transform:translateY(-24px) scale(.5) rotate(-8deg); opacity:0}100%{transform:none; opacity:1}}
   .piece.captured{animation:capture .6s forwards ease}
-  @keyframes capture{60%{transform:rotate(74deg) translateY(10px)}100%{transform:rotate(90deg) translateY(16px); opacity:.28}}
+  @keyframes capture{60%{transform:rotate(74deg) translateY(8px)}100%{transform:rotate(90deg) translateY(14px); opacity:.28}}
   .piece.victor{animation:victor .6s ease}
-  @keyframes victor{0%,100%{transform:none}30%{transform:translateY(-10px) scale(1.08)}}
+  @keyframes victor{0%,100%{transform:none}30%{transform:translateY(-9px) scale(1.08)}}
   .piece.shake{animation:shk .4s ease}
-  @keyframes shk{0%,100%{transform:none}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+  @keyframes shk{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
   .vs{font-size:15px; color:var(--gold2); letter-spacing:.2em; opacity:.8}
-  .rankname{font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:#e9dcb4; margin-top:8px; min-height:16px}
-  .rankval{font-size:10px; color:#a7c9b3}
-  .verdict{text-align:center; min-height:30px; margin:8px 0 2px; font-size:19px; letter-spacing:.05em}
-  .verdict .win{color:var(--green)} .verdict .lose{color:var(--red)} .verdict .tie{color:var(--gold)} .verdict .jack{color:#ffd86b}
+  .handname{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#e9dcb4; margin-top:8px; min-height:16px}
+  .verdict{text-align:center; min-height:30px; margin:8px 0 2px; font-size:18px; letter-spacing:.04em}
+  .verdict .win{color:var(--green)} .verdict .lose{color:var(--red)} .verdict .tie{color:var(--gold)} .verdict .jack{color:#ffd86b} .verdict .noq{color:#9fd0b3}
 
-  /* bet spots */
   .spots{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:8px 0 4px}
-  .spot{
-    border:1px dashed var(--line); border-radius:14px; padding:12px 12px 10px; text-align:center; cursor:pointer;
-    background:rgba(0,0,0,.16); transition:border-color .15s, background .15s, transform .05s; user-select:none; position:relative;
-  }
+  .spot{border:1px dashed var(--line); border-radius:14px; padding:12px 12px 10px; text-align:center; cursor:pointer;
+    background:rgba(0,0,0,.16); transition:border-color .15s, background .15s, transform .05s; user-select:none; position:relative}
   .spot:hover{border-color:var(--gold)} .spot:active{transform:scale(.99)}
   .spot.has{border-style:solid; background:rgba(232,193,90,.08)}
   .spot.nudge{animation:nudge .55s ease}
   @keyframes nudge{0%,100%{transform:none;border-color:var(--gold)}20%{transform:translateX(-6px)}60%{transform:translateX(6px)}}
-  .spot .name{font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--gold)}
+  .spot .name{font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold)}
   .spot .desc{font-size:11px; color:#c9bd97; margin:4px 0 6px}
-  .spot .stack{height:34px; display:flex; align-items:center; justify-content:center; gap:-6px}
+  .spot .stack{height:30px; display:flex; align-items:center; justify-content:center}
   .spot .bet{font-size:20px; color:#fff; font-weight:bold; min-height:24px}
-  .mini{width:26px;height:26px;border-radius:50%;margin-left:-10px;border:2px solid rgba(255,255,255,.7);
-    box-shadow:0 2px 5px rgba(0,0,0,.5);display:inline-block;position:relative}
+  .mini{width:24px;height:24px;border-radius:50%;margin-left:-9px;border:2px solid rgba(255,255,255,.7);
+    box-shadow:0 2px 5px rgba(0,0,0,.5);display:inline-block}
   .mini:first-child{margin-left:0}
 
-  /* chip tray */
   .tray{display:flex; gap:8px; justify-content:center; align-items:center; flex-wrap:wrap; margin:14px 0 2px}
-  .chip{
-    width:54px;height:54px;border-radius:50%;cursor:pointer;border:none;position:relative;font-family:inherit;
-    font-weight:bold;font-size:14px;color:#10100f;
+  .chip{width:54px;height:54px;border-radius:50%;cursor:pointer;border:none;position:relative;font-family:inherit;font-weight:bold;font-size:14px;color:#10100f;
     background:radial-gradient(circle at 50% 36%, #ffffff55 0 17%, transparent 18%), var(--c,#ccc);
-    box-shadow:0 5px 12px rgba(0,0,0,.45), inset 0 0 0 4px rgba(255,255,255,.28), inset 0 0 0 7px var(--c,#ccc);
-    transition:transform .08s;
-  }
+    box-shadow:0 5px 12px rgba(0,0,0,.45), inset 0 0 0 4px rgba(255,255,255,.28), inset 0 0 0 7px var(--c,#ccc); transition:transform .08s}
   .chip:before{content:"";position:absolute;inset:5px;border-radius:50%;border:2px dashed rgba(0,0,0,.28)}
   .chip.sel{transform:translateY(-7px) scale(1.07); outline:2px solid var(--gold); outline-offset:2px}
   .chip span{position:relative;z-index:2}
   .tray .util{display:flex; gap:6px; margin-left:6px}
   .tray .util button{font-family:inherit;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#e7dcb6;
     background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 11px;cursor:pointer}
-  .tray .util button:hover{background:rgba(232,193,90,.1)}
-  .tray .util button:disabled{opacity:.35;cursor:not-allowed}
+  .tray .util button:hover{background:rgba(232,193,90,.1)} .tray .util button:disabled{opacity:.35;cursor:not-allowed}
 
   .controls{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px}
   button.act{font-family:inherit;font-size:15px;letter-spacing:.14em;text-transform:uppercase;padding:14px 30px;border-radius:12px;
@@ -134,49 +117,43 @@
   button.act:hover{transform:translateY(-1px)} button.act:disabled{opacity:.4;cursor:not-allowed;transform:none}
   .hint{text-align:center;font-size:12.5px;color:#cdbf98;min-height:18px;margin-top:9px;font-style:italic}
 
-  /* panels */
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-  @media(max-width:760px){.grid2{grid-template-columns:1fr} .square{width:118px;height:118px} .piece{font-size:70px}}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr} .square.big{width:112px;height:112px} .square.sm{width:88px;height:88px} .square.big .piece{font-size:66px} .square.sm .piece{font-size:50px}}
   .panel{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--panel)}
   .panel h3{margin:0 0 10px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:flex;justify-content:space-between;align-items:center}
   .row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px dotted rgba(255,255,255,.08)}
   .row:last-child{border-bottom:none}.row span:last-child{color:#fff;font-weight:bold}.muted{color:#c9bd97}
   .pill{display:inline-block;padding:2px 8px;border:1px solid var(--line);border-radius:999px;font-size:11px;margin:2px}
 
-  /* simulator */
   .sim{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--panel)}
   .sim h3{margin:0 0 8px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
   .sim .simrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
   .sim canvas{flex:1;min-width:260px;height:120px;background:rgba(0,0,0,.28);border-radius:10px;border:1px solid rgba(232,193,90,.15)}
   .sim .simstats{min-width:180px}
   .sim .simbtns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-  .sim .simbtns button{font-family:inherit;font-size:12px;letter-spacing:.08em;color:#1a1206;background:linear-gradient(180deg,var(--gold),var(--gold2));
-    border:none;border-radius:9px;padding:9px 13px;cursor:pointer;font-weight:bold}
+  .sim .simbtns button{font-family:inherit;font-size:12px;letter-spacing:.08em;color:#1a1206;background:linear-gradient(180deg,var(--gold),var(--gold2));border:none;border-radius:9px;padding:9px 13px;cursor:pointer;font-weight:bold}
   .sim .simbtns button.ghost{background:var(--panel);color:#e7dcb6;border:1px solid var(--line)}
-  .sim .big{font-size:30px;color:#fff;font-weight:bold} .sim .big small{font-size:13px;color:#c9bd97;font-weight:normal}
-  .sim .tgt{font-size:12px;color:#9fd0b3}
+  .sim .big{font-size:30px;color:#fff;font-weight:bold} .sim .tgt{font-size:12px;color:#9fd0b3}
 
-  /* modal */
   .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
   .modal.show{display:flex}
-  .card{max-width:520px;width:100%;background:linear-gradient(180deg,#12281f,#0c1c16);border:1px solid var(--gold);border-radius:18px;
+  .card{max-width:540px;width:100%;background:linear-gradient(180deg,#12281f,#0c1c16);border:1px solid var(--gold);border-radius:18px;
     padding:24px;box-shadow:0 30px 70px rgba(0,0,0,.6);max-height:86vh;overflow:auto}
-  .card h2{margin:0 0 12px;color:var(--gold);letter-spacing:.12em}
-  .card p{font-size:14px;line-height:1.65;color:#e6dcbe} .card b{color:var(--gold)}
+  .card h2{margin:0 0 12px;color:var(--gold);letter-spacing:.1em;font-size:19px}
+  .card h2.sub{font-size:15px;margin-top:18px}
+  .card p{font-size:13.5px;line-height:1.65;color:#e6dcbe} .card b{color:var(--gold)}
   .card .close{float:right;cursor:pointer;color:#c9bd97;font-size:20px;border:none;background:none}
-  .card table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
-  .card td{padding:6px 4px;border-bottom:1px dotted rgba(255,255,255,.12)} .card td:last-child{text-align:right;color:#fff;font-weight:bold}
+  .card table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+  .card td{padding:5px 4px;border-bottom:1px dotted rgba(255,255,255,.12)} .card td:last-child{text-align:right;color:#fff;font-weight:bold}
 
   .foot{text-align:center;font-size:11px;color:#a99f7f;margin-top:16px;line-height:1.6}.foot b{color:var(--gold)}
+  .hide{display:none!important}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="brand">
-      <span class="crown">♚</span>
-      <div><h1>GAMBIT</h1><small>The Casino Chess Duel</small></div>
-    </div>
+    <div class="brand"><span class="crown">♚</span><div><h1>GAMBIT</h1><small>The Casino Chess Duel</small></div></div>
     <div class="hdr-right">
       <div class="bankwrap"><div class="lbl">Bankroll</div><div class="amt" id="bankBox">₾<span id="bank">1,000</span></div></div>
       <div class="icons">
@@ -187,6 +164,11 @@
     </div>
   </header>
 
+  <div class="modes">
+    <button id="modeStandoff" class="on">Standoff · 2 pieces</button>
+    <button id="modeDuel">Classic Duel</button>
+  </div>
+
   <div class="table">
     <div class="prog">
       <div class="top"><span>♚ Twin Kings Jackpot</span><span class="amt" id="jackpot">5,000</span></div>
@@ -196,20 +178,37 @@
     <div class="arena">
       <div class="side">
         <div class="role">You</div>
-        <div class="square" id="pSq"><div id="pPiece" class="piece player empty">♟</div></div>
-        <div id="pName" class="rankname">—</div>
+        <div class="squares" id="pSquares"></div>
+        <div id="pHand" class="handname">—</div>
       </div>
       <div class="vs">⚔</div>
       <div class="side">
         <div class="role">House</div>
-        <div class="square" id="dSq"><div id="dPiece" class="piece dealer empty">♟</div></div>
-        <div id="dName" class="rankname">—</div>
+        <div class="squares" id="dSquares"></div>
+        <div id="dHand" class="handname">—</div>
       </div>
     </div>
 
     <div id="verdict" class="verdict">&nbsp;</div>
 
-    <div class="spots">
+    <!-- Standoff bets -->
+    <div class="spots" id="spotsStandoff">
+      <div id="spotAnte" class="spot" data-spot="ante">
+        <div class="name">Ante</div>
+        <div class="desc">Two pieces each. Advance or Resign vs the hidden House.</div>
+        <div class="stack" id="stackAnte"></div>
+        <div class="bet" id="anteBet">—</div>
+      </div>
+      <div id="spotTwin" class="spot" data-spot="twin">
+        <div class="name">Twin Pieces · pays 4 : 1</div>
+        <div class="desc">Your two pieces make a pair. Two Kings hits the Jackpot.</div>
+        <div class="stack" id="stackTwin"></div>
+        <div class="bet" id="twinBet">—</div>
+      </div>
+    </div>
+
+    <!-- Duel bets -->
+    <div class="spots hide" id="spotsDuel">
       <div id="spotDuel" class="spot" data-spot="duel">
         <div class="name">Duel · pays 1 : 1</div>
         <div class="desc">Highest piece captures. Tie triggers the Gambit.</div>
@@ -233,7 +232,7 @@
     </div>
 
     <div class="controls" id="controls"></div>
-    <div class="hint" id="hint">Tap a chip, tap the Duel spot to bet, then Deal.</div>
+    <div class="hint" id="hint">Tap a chip, tap Ante to bet, then Deal.</div>
   </div>
 
   <div class="grid2">
@@ -243,15 +242,12 @@
       <div class="row"><span class="muted">Total wagered</span><span id="sWager">₾0</span></div>
       <div class="row"><span class="muted">Your net result</span><span id="sNet">₾0</span></div>
       <div class="row"><span class="muted">Realized edge (per ante)</span><span id="sHold">—</span></div>
-      <div class="row"><span class="muted">Gambits triggered</span><span id="sGambit">0</span></div>
+      <div class="row"><span class="muted" id="lblDecide">Resigns / Folds</span><span id="sGambit">0</span></div>
       <div class="row"><span class="muted">Jackpots hit</span><span id="sJack">0</span></div>
     </div>
     <div class="panel">
-      <h3>The Math <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:normal">verified · 2.2B hands</span></h3>
-      <div class="row"><span class="muted">Duel house edge</span><span>4.17%</span></div>
-      <div class="row"><span class="muted">Gambit (tie) frequency</span><span>16.67%</span></div>
-      <div class="row"><span class="muted">King's Bounty hold</span><span>16.67%</span></div>
-      <div class="row"><span class="muted">Twin Kings / Jackpot</span><span>1 in 36</span></div>
+      <h3>The Math <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:normal">verified</span></h3>
+      <div id="mathRows"></div>
       <div style="margin-top:8px">
         <span class="pill">♟ Pawn 1</span><span class="pill">♞ Knight 2</span><span class="pill">♝ Bishop 3</span>
         <span class="pill">♜ Rook 4</span><span class="pill">♛ Queen 5</span><span class="pill">♚ King 6</span>
@@ -273,113 +269,131 @@
       <div class="simstats">
         <div class="muted" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase">Simulated house edge</div>
         <div class="big"><span id="simEdge">—</span></div>
-        <div class="tgt">target 4.167% · <span id="simCount">0</span> hands · flat Duel bet, optimal play</div>
+        <div class="tgt">target <span id="simTarget">6.48%</span> · <span id="simCount">0</span> hands · <span id="simMode">Standoff</span>, optimal play</div>
       </div>
     </div>
   </div>
 
-  <div class="foot">
-    <b>GAMBIT</b> · concept prototype · play money only · house edge verified by 2.2-billion-hand Monte Carlo simulation.
-  </div>
+  <div class="foot"><b>GAMBIT</b> · concept prototype · play money only · edges verified by Monte Carlo simulation.</div>
 </div>
 
-<!-- rules modal -->
-<div class="modal" id="modal">
-  <div class="card">
-    <button class="close" id="modalClose">✕</button>
-    <h2>♚ How to play</h2>
-    <p>Place a bet on the <b>Duel</b>. You and the House are each dealt one piece from the hierarchy
-    <b>Pawn ‹ Knight ‹ Bishop ‹ Rook ‹ Queen ‹ King</b>. The higher piece captures and pays even money.</p>
-    <p>On a <b>tie</b>, choose: <b>Resign</b> to surrender half your bet, or play the <b>Gambit</b> — match your
-    bet, redeal, and you win on ties. Advancing into the Gambit is always the mathematically correct choice.</p>
-    <p>The optional <b>King's Bounty</b> side bet wins when your piece is a King. If both you and the House draw
-    Kings, you win the <b>Twin Kings progressive jackpot</b>.</p>
-    <h2 style="font-size:16px;margin-top:18px">Paytable</h2>
+<div class="modal" id="modal"><div class="card">
+  <button class="close" id="modalClose">✕</button>
+  <div id="rulesStandoff">
+    <h2>♚ Standoff — how to play</h2>
+    <p>Place an <b>Ante</b>. You and the House each receive <b>two pieces</b> — yours face-up, the House's hidden.
+    Looking at your hand, choose to <b>Advance</b> (match your Ante) or <b>Resign</b> (forfeit it).</p>
+    <p>The House then reveals and must <b>qualify</b> with a <b>Rook-high hand or a pair</b>. A <b>pair beats</b> two
+    different pieces; otherwise the higher piece wins, ties broken by the second piece. <b>Ties go to the House.</b></p>
+    <p><b>Optimal strategy is one line:</b> Advance with any pair, or a Queen-high hand or better. Otherwise Resign.</p>
+    <h2 class="sub">Paytable</h2>
+    <table>
+      <tr><td>House does not qualify</td><td>Ante pays 1:1, Advance pushes</td></tr>
+      <tr><td>You beat a qualifying House</td><td>Ante & Advance pay 1:1</td></tr>
+      <tr><td>Twin Pieces — any pair</td><td>4 : 1</td></tr>
+      <tr><td>Twin Kings — pair of Kings</td><td>Progressive jackpot</td></tr>
+    </table>
+    <p style="font-size:12px;color:#b9ad84">House edge 6.48% per ante · 3.89% element of risk · you fold ~1 in 3 hands.</p>
+  </div>
+  <div id="rulesDuel" class="hide">
+    <h2>♚ Classic Duel — how to play</h2>
+    <p>Place a bet on the <b>Duel</b>. One piece each; the higher (Pawn ‹ Knight ‹ Bishop ‹ Rook ‹ Queen ‹ King)
+    captures and pays even money. On a <b>tie</b>, <b>Resign</b> for half or play the <b>Gambit</b> — match your bet,
+    redeal, and you win on ties (always the correct play).</p>
+    <p>The <b>King's Bounty</b> side bet pays when your piece is a King; two Kings win the <b>progressive jackpot</b>.</p>
+    <h2 class="sub">Paytable</h2>
     <table>
       <tr><td>Duel — higher piece</td><td>1 : 1</td></tr>
-      <tr><td>Gambit won (after tie)</td><td>1 : 1 on the raise</td></tr>
       <tr><td>King's Bounty — your King</td><td>4 : 1</td></tr>
       <tr><td>Twin Kings — both Kings</td><td>Progressive jackpot</td></tr>
     </table>
-    <p style="font-size:12px;color:#b9ad84">House edge: Duel 4.17% · King's Bounty 16.7% · Gambit fires ~1 in 6 hands.</p>
+    <p style="font-size:12px;color:#b9ad84">House edge 4.17% · Gambit fires ~1 in 6 hands.</p>
   </div>
-</div>
+</div></div>
 
 <script>
 (function(){
-  const PIECES=[
-    {r:1,name:"Pawn",g:"♟"},{r:2,name:"Knight",g:"♞"},{r:3,name:"Bishop",g:"♝"},
-    {r:4,name:"Rook",g:"♜"},{r:5,name:"Queen",g:"♛"},{r:6,name:"King",g:"♚"}
-  ];
+  const PIECES=[{r:1,name:"Pawn",g:"♟"},{r:2,name:"Knight",g:"♞"},{r:3,name:"Bishop",g:"♝"},
+    {r:4,name:"Rook",g:"♜"},{r:5,name:"Queen",g:"♛"},{r:6,name:"King",g:"♚"}];
+  const NAME=r=>PIECES[r-1].name, GLYPH=r=>PIECES[r-1].g;
   const CHIPS=[{v:5,c:"#b9412f"},{v:25,c:"#2f7d46"},{v:100,c:"#22242a"},{v:500,c:"#6d4bb0"},{v:1000,c:"#c9a227"}];
   const START=1000, JACK_SEED=5000, JACK_GROW=0.05, JACK_CAP=25000;
 
+  let mode="standoff";                 // 'standoff' | 'duel'
   let bank=START, jackpot=JACK_SEED, chip=25;
-  let bets={duel:0,bounty:0}, betOrder=[], lastBets={duel:0,bounty:0};
-  let stats={hands:0,wager:0,ante:0,net:0,gambit:0,jack:0};
-  let phase="bet", pending=null, soundOn=true, animating=false;
+  let bets={};                         // per-mode bet map
+  let betOrder=[], lastBets={};
+  let stats={hands:0,wager:0,ante:0,net:0,decide:0,jack:0};
+  let phase="bet", pending=null, soundOn=true;
 
   const $=id=>document.getElementById(id);
   const fmt=n=>Math.round(n).toLocaleString("en-US");
-  const draw=()=>PIECES[Math.random()*6|0];
+  const draw=()=>1+(Math.random()*6|0);
   const chipColor=v=>(CHIPS.find(c=>c.v===v)||CHIPS[1]).c;
+  const spotsOf=()=> mode==="standoff"? ["ante","twin"] : ["duel","bounty"];
+  const mainBet=()=> mode==="standoff"? "ante":"duel";
 
-  /* ---------- sound (WebAudio, no assets) ---------- */
+  /* ---- two-piece hand helpers ---- */
+  function hand(a,b){ const hi=Math.max(a,b),lo=Math.min(a,b); return {a,b,pair:a===b,hi,lo}; }
+  function handName(h){ return h.pair? "Pair of "+NAME(h.hi)+"s" : NAME(h.hi)+" – "+NAME(h.lo); }
+  function cmpHand(P,H){ if(P.pair!==H.pair) return P.pair?1:-1;
+    if(P.pair) return P.hi>H.hi?1:(P.hi<H.hi?-1:0);
+    if(P.hi!==H.hi) return P.hi>H.hi?1:-1; if(P.lo!==H.lo) return P.lo>H.lo?1:-1; return 0; }
+  const houseQual=H=> H.pair || H.hi>=4;                 // Rook-high or pair
+  const shouldAdvance=P=> P.pair || P.hi>=5;             // pair or Queen-high+
+
+  /* ---- sound ---- */
   let ac=null;
-  function tone(freq,dur,type,vol,when){
-    if(!soundOn) return;
-    try{ ac=ac||new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; }
-    const t0=ac.currentTime+(when||0);
-    const o=ac.createOscillator(), g=ac.createGain();
-    o.type=type||"sine"; o.frequency.value=freq;
-    g.gain.setValueAtTime(0,t0); g.gain.linearRampToValueAtTime(vol||.12,t0+.01);
-    g.gain.exponentialRampToValueAtTime(.0001,t0+(dur||.15));
-    o.connect(g); g.connect(ac.destination); o.start(t0); o.stop(t0+(dur||.15)+.02);
-  }
-  const sfx={
-    chip:()=>tone(660,.08,"triangle",.10),
-    deal:()=>{tone(420,.07,"square",.06);tone(520,.07,"square",.06,.08);},
-    win:()=>{tone(523,.12,"sine",.12);tone(784,.16,"sine",.12,.1);},
-    lose:()=>tone(180,.25,"sine",.12),
+  function tone(f,d,t,v,w){ if(!soundOn) return; try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();}catch(e){return;}
+    const t0=ac.currentTime+(w||0), o=ac.createOscillator(), g=ac.createGain();
+    o.type=t||"sine"; o.frequency.value=f; g.gain.setValueAtTime(0,t0); g.gain.linearRampToValueAtTime(v||.12,t0+.01);
+    g.gain.exponentialRampToValueAtTime(.0001,t0+(d||.15)); o.connect(g); g.connect(ac.destination); o.start(t0); o.stop(t0+(d||.15)+.02); }
+  const sfx={ chip:()=>tone(660,.08,"triangle",.1), deal:()=>{tone(420,.07,"square",.06);tone(520,.07,"square",.06,.08);},
+    win:()=>{tone(523,.12,"sine",.12);tone(784,.16,"sine",.12,.1);}, lose:()=>tone(180,.25,"sine",.12),
     tie:()=>{tone(400,.1,"triangle",.1);tone(400,.1,"triangle",.1,.14);},
-    jack:()=>[0,.1,.2,.3,.45].forEach((d,i)=>tone([523,659,784,1046,1318][i],.22,"sine",.13,d))
-  };
+    jack:()=>[0,.1,.2,.3,.45].forEach((d,i)=>tone([523,659,784,1046,1318][i],.22,"sine",.13,d)) };
 
-  /* ---------- render ---------- */
-  function renderTray(){
-    const t=$("tray"); [...t.querySelectorAll(".chip")].forEach(e=>e.remove());
-    CHIPS.slice().reverse().forEach(c=>{
-      const b=document.createElement("button");
-      b.className="chip"+(c.v===chip?" sel":""); b.style.setProperty("--c",c.c);
-      b.innerHTML="<span>"+(c.v>=1000?(c.v/1000)+"K":c.v)+"</span>";
-      b.onclick=()=>{ chip=c.v; renderTray(); };
-      t.insertBefore(b, t.firstChild);
+  /* ---- render: squares ---- */
+  function renderSquares(){
+    const n = mode==="standoff"?2:1, cls = mode==="standoff"?"sm":"big";
+    ["p","d"].forEach(w=>{
+      const host=$(w==="p"?"pSquares":"dSquares"); host.innerHTML="";
+      for(let i=0;i<n;i++){
+        const sq=document.createElement("div"); sq.className="square "+cls; sq.id=w+"Sq"+i;
+        const pc=document.createElement("div"); pc.className="piece "+(w==="p"?"player":"dealer")+" empty"; pc.id=w+"Pc"+i; pc.textContent="♟";
+        sq.appendChild(pc); host.appendChild(sq);
+      }
     });
   }
+  function setPiece(w,i,rank,cls){ const pc=$(w+"Pc"+i); if(!pc) return;
+    if(rank===null){ pc.className="piece "+(w==="p"?"player":"dealer")+" empty"; pc.textContent="♟"; return; }
+    if(rank==="back"){ pc.className="piece back"; pc.textContent="?"; return; }
+    pc.className="piece "+(w==="p"?"player":"dealer")+(cls?(" "+cls):""); pc.textContent=GLYPH(rank); }
+  function clearSq(){ ["p","d"].forEach(w=>[0,1].forEach(i=>{const s=$(w+"Sq"+i); if(s)s.classList.remove("win","lose");})); }
+  function setHand(w,txt){ $(w==="p"?"pHand":"dHand").textContent=txt; }
+
+  /* ---- render: bank/jackpot/bets/stats ---- */
   function flashBank(){ const b=$("bankBox"); b.classList.remove("flash"); void b.offsetWidth; b.classList.add("flash"); }
   function renderBank(){ $("bank").textContent=fmt(bank); }
-  function renderJackpot(pop){
-    $("jackpot").textContent=fmt(jackpot);
+  function renderJackpot(pop){ $("jackpot").textContent=fmt(jackpot);
     $("jackBar").style.width=Math.max(6,Math.min(100,(jackpot-JACK_SEED)/(JACK_CAP-JACK_SEED)*100)).toFixed(1)+"%";
-    if(pop){ const a=$("jackpot"); a.classList.remove("pop"); void a.offsetWidth; a.classList.add("pop"); }
-  }
-  function chipStackHTML(amount){
-    if(!amount) return "";
-    // greedy breakdown into chip denominations, cap visible chips
-    let rem=amount, out=[];
-    CHIPS.slice().reverse().forEach(c=>{ while(rem>=c.v && out.length<8){ out.push(c.v); rem-=c.v; } });
-    return out.map(v=>'<span class="mini" style="background:radial-gradient(circle at 50% 35%,#fff5 0 30%,transparent 31%),'+chipColor(v)+'"></span>').join("");
-  }
+    if(pop){ const a=$("jackpot"); a.classList.remove("pop"); void a.offsetWidth; a.classList.add("pop"); } }
+  function stackHTML(amount){ if(!amount) return ""; let rem=amount,out=[];
+    CHIPS.slice().reverse().forEach(c=>{ while(rem>=c.v && out.length<7){ out.push(c.v); rem-=c.v; } });
+    return out.map(v=>'<span class="mini" style="background:radial-gradient(circle at 50% 35%,#fff5 0 30%,transparent 31%),'+chipColor(v)+'"></span>').join(""); }
   function renderBets(){
-    $("duelBet").textContent   = bets.duel   ? "₾"+fmt(bets.duel)   : "—";
-    $("bountyBet").textContent = bets.bounty ? "₾"+fmt(bets.bounty) : "—";
-    $("stackDuel").innerHTML   = chipStackHTML(bets.duel);
-    $("stackBounty").innerHTML = chipStackHTML(bets.bounty);
-    $("spotDuel").classList.toggle("has",!!bets.duel);
-    $("spotBounty").classList.toggle("has",!!bets.bounty);
+    spotsOf().forEach(k=>{
+      const betEl=$(k+"Bet"), stackEl=$("stack"+k[0].toUpperCase()+k.slice(1)), spotEl=$("spot"+k[0].toUpperCase()+k.slice(1));
+      const amt=bets[k]||0;
+      if(betEl) betEl.textContent=amt?"₾"+fmt(amt):"—";
+      if(stackEl) stackEl.innerHTML=stackHTML(amt);
+      if(spotEl) spotEl.classList.toggle("has",!!amt);
+    });
     $("btnUndo").disabled=!betOrder.length;
-    $("btnClear").disabled=!(bets.duel||bets.bounty);
-    $("btnRepeat").disabled=!(lastBets.duel||lastBets.bounty)||(bets.duel||bets.bounty);
+    const anyBet=spotsOf().some(k=>bets[k]);
+    $("btnClear").disabled=!anyBet;
+    const anyLast=spotsOf().some(k=>lastBets[k]);
+    $("btnRepeat").disabled=!anyLast||anyBet;
   }
   function renderStats(){
     const playerNet=-stats.net;
@@ -388,193 +402,208 @@
     $("sNet").textContent=(playerNet<0?"−₾":"₾")+fmt(Math.abs(playerNet));
     $("sNet").style.color=playerNet<0?"var(--red)":(playerNet>0?"var(--green)":"#fff");
     $("sHold").textContent=stats.ante?((stats.net/stats.ante*100).toFixed(2)+"%"):"—";
-    $("sGambit").textContent=stats.gambit;
+    $("sGambit").textContent=stats.decide;
     $("sJack").textContent=stats.jack;
   }
   function setVerdict(h){ $("verdict").innerHTML=h||"&nbsp;"; }
   function setHint(t){ $("hint").textContent=t; }
-  function showPiece(which,p,cls){
-    const el=$(which==="p"?"pPiece":"dPiece"), nm=$(which==="p"?"pName":"dName");
-    if(!p){ el.className="piece "+(which==="p"?"player":"dealer")+" empty"; el.textContent="♟"; nm.textContent="—"; return; }
-    el.className="piece "+(which==="p"?"player":"dealer")+(cls?(" "+cls):"");
-    el.textContent=p.g; nm.innerHTML=p.name+' <span class="rankval">('+p.r+')</span>';
-  }
-  function sq(which){ return $(which==="p"?"pSq":"dSq"); }
-  function clearSqFx(){ ["p","d"].forEach(w=>{ sq(w).classList.remove("win","lose"); }); }
 
-  /* ---------- controls ---------- */
+  function renderMath(){
+    const rows = mode==="standoff" ? [
+      ["House edge (per ante)","6.48%"],["Element of risk","3.89%"],
+      ["You Advance","~66.7%"],["Twin Pieces hold","16.67%"],["Twin Kings / Jackpot","1 in 36"]
+    ] : [
+      ["Duel house edge","4.17%"],["Gambit (tie) frequency","16.67%"],
+      ["King's Bounty hold","16.67%"],["Twin Kings / Jackpot","1 in 36"]
+    ];
+    $("mathRows").innerHTML=rows.map(r=>'<div class="row"><span class="muted">'+r[0]+'</span><span>'+r[1]+'</span></div>').join("");
+    $("lblDecide").textContent = mode==="standoff"?"Resigns (folds)":"Gambits triggered";
+  }
+
+  /* ---- controls ---- */
   function mkBtn(label,cls,fn){ const b=document.createElement("button"); b.className=cls; b.innerHTML=label; b.onclick=fn; return b; }
-  function controlsBet(){
-    const c=$("controls"); c.innerHTML="";
-    const deal=mkBtn("Deal","act primary",deal_); deal.id="btnDeal";
-    c.appendChild(deal);
-  }
-  function controlsGambit(){
-    const c=$("controls"); c.innerHTML="";
+  function controlsBet(){ $("controls").innerHTML=""; const d=mkBtn("Deal","act primary",deal_); d.id="btnDeal"; $("controls").appendChild(d); }
+  function controlsDecide(){ $("controls").innerHTML="";
+    const rec=shouldAdvance(pending.P);
+    const resign=mkBtn("Resign","act danger",()=>resolveStandoff(false));
+    const adv=mkBtn("Advance ⚔","act primary",()=>resolveStandoff(true)); adv.disabled=bank<bets.ante;
+    $("controls").append(resign,adv); }
+  function controlsGambit(){ $("controls").innerHTML="";
     const resign=mkBtn("Resign −½","act danger",()=>resolveGambit(false));
-    const adv=mkBtn("Advance ⚔","act primary",()=>resolveGambit(true));
-    adv.disabled=bank<bets.duel;
-    c.append(resign,adv);
-  }
-  function controlsDone(){
-    const c=$("controls"); c.innerHTML="";
-    const again=mkBtn("Rebet ↻","act",rebet); again.disabled=(lastBets.duel+lastBets.bounty)>bank;
-    const next=mkBtn("New Hand","act primary",newHand);
-    c.append(again,next);
-  }
+    const adv=mkBtn("Advance ⚔","act primary",()=>resolveGambit(true)); adv.disabled=bank<bets.duel;
+    $("controls").append(resign,adv); }
+  function controlsDone(){ $("controls").innerHTML="";
+    const again=mkBtn("Rebet ↻","act",rebet); again.disabled=totalLast()>bank;
+    const next=mkBtn("New Hand","act primary",newHand); $("controls").append(again,next); }
+  const totalLast=()=>spotsOf().reduce((s,k)=>s+(lastBets[k]||0),0);
 
-  /* ---------- betting ---------- */
-  function addBet(spot){
-    if(phase!=="bet"||animating) return;
+  /* ---- betting ---- */
+  function addBet(spot){ if(phase!=="bet") return;
     if(bank<chip){ setHint("Not enough bankroll for that chip."); return; }
-    bank-=chip; bets[spot]+=chip; betOrder.push({spot,amt:chip});
-    sfx.chip(); renderBank(); renderBets(); setHint("Bet placed. Add more, Undo, or Deal.");
-  }
-  function undoBet(){
-    if(phase!=="bet"||!betOrder.length) return;
-    const last=betOrder.pop(); bank+=last.amt; bets[last.spot]-=last.amt;
-    renderBank(); renderBets(); setHint("Removed last chip.");
-  }
-  function clearBets(){
-    if(phase!=="bet") return;
-    bank+=bets.duel+bets.bounty; bets={duel:0,bounty:0}; betOrder=[];
-    renderBank(); renderBets(); setHint("Bets cleared.");
-  }
-  function nudge(){
-    setHint("👆 Tap a chip, then tap the Duel spot to place a bet — then Deal.");
-    ["spotDuel","spotBounty"].forEach(id=>{ const e=$(id); e.classList.remove("nudge"); void e.offsetWidth; e.classList.add("nudge"); });
-  }
+    bank-=chip; bets[spot]=(bets[spot]||0)+chip; betOrder.push({spot,amt:chip});
+    sfx.chip(); renderBank(); renderBets(); setHint("Bet placed. Add more, Undo, or Deal."); }
+  function undoBet(){ if(phase!=="bet"||!betOrder.length) return;
+    const last=betOrder.pop(); bank+=last.amt; bets[last.spot]-=last.amt; renderBank(); renderBets(); setHint("Removed last chip."); }
+  function clearBets(){ if(phase!=="bet") return; spotsOf().forEach(k=>{bank+=bets[k]||0; bets[k]=0;}); betOrder=[]; renderBank(); renderBets(); setHint("Bets cleared."); }
+  function nudge(sid){ const first=spotsOf()[0]; const el=$("spot"+first[0].toUpperCase()+first.slice(1));
+    setHint("👆 Tap a chip, then tap "+(mode==="standoff"?"Ante":"the Duel spot")+" to place a bet — then Deal.");
+    [el].forEach(e=>{ if(!e)return; e.classList.remove("nudge"); void e.offsetWidth; e.classList.add("nudge"); }); }
 
-  /* ---------- deal / resolve (money logic identical to verified model) ---------- */
-  function deal_(){
-    if(phase!=="bet"||animating) return;
-    if(!(bets.duel||bets.bounty)){ nudge(); return; }
+  /* ---- deal dispatch ---- */
+  function deal_(){ if(phase!=="bet") return;
+    if(!bets[mainBet()] && !(mode==="standoff"&&bets.twin) && !(mode==="duel"&&bets.bounty)){ nudge(); return; }
+    if(mode==="standoff") dealStandoff(); else dealDuel(); }
+
+  /* =================== STANDOFF =================== */
+  function dealStandoff(){
+    if(!bets.ante && !bets.twin){ nudge(); return; }
     lastBets={...bets}; betOrder=[];
-    stats.hands++; stats.wager+=bets.duel+bets.bounty; stats.ante+=bets.duel+bets.bounty;
-    clearSqFx();
-    const p=draw(), d=draw();
-    sfx.deal();
-    showPiece("p",p,"deal-in"); showPiece("d",d,"deal-in");
+    stats.hands++; const staked=(bets.ante||0)+(bets.twin||0); stats.wager+=staked; stats.ante+=(bets.ante||0);
+    clearSq();
+    const p1=draw(),p2=draw(); const P=hand(p1,p2);
+    sfx.deal(); setPiece("p",0,p1,"deal-in"); setPiece("p",1,p2,"deal-in"); setHand("p",handName(P));
+    setPiece("d",0,"back"); setPiece("d",1,"back"); setHand("d","· · ·");
 
-    // King's Bounty
-    let bmsg="";
-    if(bets.bounty){
-      jackpot=Math.min(JACK_CAP, jackpot+bets.bounty*JACK_GROW);
-      if(p.r===6&&d.r===6){
-        stats.jack++; const won=Math.round(jackpot);
-        bank+=won+bets.bounty*5; stats.net-=(won+bets.bounty*4);
-        bmsg=" · <span class='jack'>TWIN KINGS — JACKPOT ₾"+fmt(won)+"!</span>";
-        jackpot=JACK_SEED; renderJackpot(true); sfx.jack();
-      } else if(p.r===6){
-        bank+=bets.bounty*5; stats.net-=bets.bounty*4;
-        bmsg=" · <span class='win'>Bounty +₾"+fmt(bets.bounty*4)+"</span>"; renderJackpot();
-      } else { stats.net+=bets.bounty; bmsg=" · <span class='lose'>Bounty lost</span>"; renderJackpot(); }
+    // Twin Pieces side bet (independent, on player's two pieces)
+    let tmsg="";
+    if(bets.twin){
+      jackpot=Math.min(JACK_CAP, jackpot+bets.twin*JACK_GROW);
+      if(p1===6&&p2===6){ stats.jack++; const won=Math.round(jackpot);
+        bank+=won+bets.twin*5; stats.net-=(won+bets.twin*4); tmsg=" · <span class='jack'>TWIN KINGS — JACKPOT ₾"+fmt(won)+"!</span>";
+        jackpot=JACK_SEED; renderJackpot(true); sfx.jack(); }
+      else if(P.pair){ bank+=bets.twin*5; stats.net-=bets.twin*4; tmsg=" · <span class='win'>Twin Pieces +₾"+fmt(bets.twin*4)+"</span>"; renderJackpot(); }
+      else { stats.net+=bets.twin; tmsg=" · <span class='lose'>Twin Pieces lost</span>"; renderJackpot(); }
     }
 
-    if(!bets.duel){ setVerdict(bmsg?bmsg.replace(/^ · /,""):"Bounty settled."); return endHand(); }
+    if(!bets.ante){ setVerdict(tmsg?tmsg.replace(/^ · /,""):"Side bet settled."); return endHand(); }
 
-    if(p.r>d.r){
-      bank+=bets.duel*2; stats.net-=bets.duel;
-      showPiece("p",p,"deal-in victor"); showPiece("d",d,"captured"); sq("p").classList.add("win");
-      setVerdict("<span class='win'>You capture — +₾"+fmt(bets.duel)+"</span>"+bmsg); sfx.win(); endHand();
-    } else if(p.r<d.r){
-      stats.net+=bets.duel;
-      showPiece("d",d,"deal-in victor"); showPiece("p",p,"captured"); sq("d").classList.add("lose");
-      setVerdict("<span class='lose'>House captures — −₾"+fmt(bets.duel)+"</span>"+bmsg); sfx.lose(); endHand();
-    } else {
-      stats.gambit++; pending={bmsg}; phase="gambit";
-      showPiece("p",p,"deal-in shake"); showPiece("d",d,"deal-in shake");
-      setVerdict("<span class='tie'>Tie — the Gambit!</span>"+bmsg); sfx.tie();
-      controlsGambit(); setHint("Resign to surrender half, or Advance: match your bet, redeal — you win on ties.");
-      renderBank(); renderBets(); renderStats();
-    }
+    pending={P,tmsg}; phase="decide";
+    const rec=shouldAdvance(P)?"Advance":"Resign";
+    setVerdict("<span class='tie'>Your move — "+handName(P)+"</span>"+tmsg);
+    setHint("Strategy: Advance on any pair or Queen-high+. This hand → "+rec+".");
+    controlsDecide(); renderBank(); renderBets(); renderStats();
   }
-
-  function resolveGambit(advance){
-    if(phase!=="gambit") return;
-    const bmsg=pending?pending.bmsg:"";
-    clearSqFx();
-    if(!advance){
-      bank+=bets.duel/2; stats.net+=bets.duel/2;
-      setVerdict("<span class='lose'>Resigned — surrender ₾"+fmt(bets.duel/2)+"</span>"+bmsg); sfx.lose();
-      return endHand();
-    }
-    bank-=bets.duel; stats.wager+=bets.duel;
-    const p2=draw(), d2=draw(); sfx.deal();
-    if(p2.r>=d2.r){
-      bank+=bets.duel*3; stats.net-=bets.duel;   // reinforcement paid 1:1 + original push
-      showPiece("p",p2,"deal-in victor"); showPiece("d",d2,"captured"); sq("p").classList.add("win");
-      setVerdict("<span class='win'>Gambit won — +₾"+fmt(bets.duel)+"</span>"+bmsg); sfx.win();
+  function resolveStandoff(advance){
+    if(phase!=="decide") return; const {P,tmsg}=pending; clearSq();
+    if(!advance){ stats.net+=bets.ante; stats.decide++;
+      setPiece("p",0,P.a,"captured"); setPiece("p",1,P.b,"captured");
+      setVerdict("<span class='lose'>Resigned — forfeit ₾"+fmt(bets.ante)+"</span>"+tmsg); sfx.lose(); return endHand(); }
+    bank-=bets.ante; stats.wager+=bets.ante;                      // Advance = match ante
+    const h1=draw(),h2=draw(); const H=hand(h1,h2); sfx.deal();
+    setPiece("d",0,h1,"deal-in"); setPiece("d",1,h2,"deal-in"); setHand("d",handName(H));
+    const A=bets.ante;
+    if(!houseQual(H)){
+      bank+=A*3; stats.net-=A;                                    // ante pays 1:1, play pushes
+      $("pSq0").classList.add("win");
+      setVerdict("<span class='noq'>House folds ("+handName(H)+") — Ante pays +₾"+fmt(A)+"</span>"+tmsg); sfx.win();
     } else {
-      stats.net+=bets.duel*2;
-      showPiece("d",d2,"deal-in victor"); showPiece("p",p2,"captured"); sq("d").classList.add("lose");
-      setVerdict("<span class='lose'>Gambit lost — −₾"+fmt(bets.duel*2)+"</span>"+bmsg); sfx.lose();
+      const c=cmpHand(P,H);
+      if(c>0){ bank+=A*4; stats.net-=A*2; $("pSq0").classList.add("win"); setPiece("d",0,h1,"captured"); setPiece("d",1,h2,"captured");
+        setVerdict("<span class='win'>You win — +₾"+fmt(A*2)+"</span>"+tmsg); sfx.win(); }
+      else { stats.net+=A*2; $("dSq0").classList.add("lose"); setPiece("p",0,P.a,"captured"); setPiece("p",1,P.b,"captured");
+        setVerdict("<span class='lose'>House "+(c===0?"holds the tie":"wins")+" — −₾"+fmt(A*2)+"</span>"+tmsg); sfx.lose(); }
     }
     endHand();
   }
 
-  function endHand(){
-    phase="done"; pending=null;
-    renderBank(); renderBets(); renderStats(); controlsDone(); flashBank();
-    setHint(bank<=0?"Out of chips — press ⟲ to reset your bankroll.":"Rebet the same, or start a new hand.");
+  /* =================== CLASSIC DUEL =================== */
+  function dealDuel(){
+    if(!bets.duel && !bets.bounty){ nudge(); return; }
+    lastBets={...bets}; betOrder=[];
+    stats.hands++; const staked=(bets.duel||0)+(bets.bounty||0); stats.wager+=staked; stats.ante+=staked;
+    clearSq();
+    const p=draw(), d=draw(); sfx.deal();
+    setPiece("p",0,p,"deal-in"); setHand("p",NAME(p)); setPiece("d",0,d,"deal-in"); setHand("d",NAME(d));
+    let bmsg="";
+    if(bets.bounty){
+      jackpot=Math.min(JACK_CAP, jackpot+bets.bounty*JACK_GROW);
+      if(p===6&&d===6){ stats.jack++; const won=Math.round(jackpot); bank+=won+bets.bounty*5; stats.net-=(won+bets.bounty*4);
+        bmsg=" · <span class='jack'>TWIN KINGS — JACKPOT ₾"+fmt(won)+"!</span>"; jackpot=JACK_SEED; renderJackpot(true); sfx.jack(); }
+      else if(p===6){ bank+=bets.bounty*5; stats.net-=bets.bounty*4; bmsg=" · <span class='win'>Bounty +₾"+fmt(bets.bounty*4)+"</span>"; renderJackpot(); }
+      else { stats.net+=bets.bounty; bmsg=" · <span class='lose'>Bounty lost</span>"; renderJackpot(); }
+    }
+    if(!bets.duel){ setVerdict(bmsg?bmsg.replace(/^ · /,""):"Bounty settled."); return endHand(); }
+    if(p>d){ bank+=bets.duel*2; stats.net-=bets.duel; setPiece("p",0,p,"deal-in victor"); setPiece("d",0,d,"captured"); $("pSq0").classList.add("win");
+      setVerdict("<span class='win'>You capture — +₾"+fmt(bets.duel)+"</span>"+bmsg); sfx.win(); endHand(); }
+    else if(p<d){ stats.net+=bets.duel; setPiece("d",0,d,"deal-in victor"); setPiece("p",0,p,"captured"); $("dSq0").classList.add("lose");
+      setVerdict("<span class='lose'>House captures — −₾"+fmt(bets.duel)+"</span>"+bmsg); sfx.lose(); endHand(); }
+    else { stats.decide++; pending={bmsg}; phase="gambit"; setPiece("p",0,p,"deal-in shake"); setPiece("d",0,d,"deal-in shake");
+      setVerdict("<span class='tie'>Tie — the Gambit!</span>"+bmsg); sfx.tie(); controlsGambit();
+      setHint("Resign for half, or Advance: match your bet, redeal — you win on ties."); renderBank(); renderBets(); renderStats(); }
   }
-  function newHand(){
-    if(phase==="gambit") return;
-    bets={duel:0,bounty:0}; betOrder=[]; phase="bet";
-    clearSqFx(); showPiece("p",null); showPiece("d",null); setVerdict("");
-    renderBets(); controlsBet(); setHint("Tap a chip, tap the Duel spot to bet, then Deal.");
-  }
-  function rebet(){
-    const want=lastBets.duel+lastBets.bounty; if(want>bank){ setHint("Not enough bankroll to repeat."); return; }
-    newHand(); bank-=want; bets={...lastBets};
-    renderBank(); renderBets(); controlsBet(); setHint("Same bets loaded — Deal when ready.");
+  function resolveGambit(advance){
+    if(phase!=="gambit") return; const bmsg=pending?pending.bmsg:""; clearSq();
+    if(!advance){ bank+=bets.duel/2; stats.net+=bets.duel/2; setVerdict("<span class='lose'>Resigned — surrender ₾"+fmt(bets.duel/2)+"</span>"+bmsg); sfx.lose(); return endHand(); }
+    bank-=bets.duel; stats.wager+=bets.duel; const p2=draw(), d2=draw(); sfx.deal();
+    if(p2>=d2){ bank+=bets.duel*3; stats.net-=bets.duel; setPiece("p",0,p2,"deal-in victor"); setPiece("d",0,d2,"captured"); $("pSq0").classList.add("win");
+      setVerdict("<span class='win'>Gambit won — +₾"+fmt(bets.duel)+"</span>"+bmsg); sfx.win(); }
+    else { stats.net+=bets.duel*2; setPiece("d",0,d2,"deal-in victor"); setPiece("p",0,p2,"captured"); $("dSq0").classList.add("lose");
+      setVerdict("<span class='lose'>Gambit lost — −₾"+fmt(bets.duel*2)+"</span>"+bmsg); sfx.lose(); }
+    endHand();
   }
 
-  /* ---------- edge simulator ---------- */
-  const sparkData=[]; let simAnte=0, simNet=0, simRunning=false;
+  /* ---- shared round flow ---- */
+  function endHand(){ phase="done"; pending=null; renderBank(); renderBets(); renderStats(); controlsDone(); flashBank();
+    setHint(bank<=0?"Out of chips — press ⟲ to reset your bankroll.":"Rebet the same, or start a new hand."); }
+  function newHand(){ if(phase==="decide"||phase==="gambit") return;
+    bets={}; betOrder=[]; phase="bet"; clearSq();
+    ["p","d"].forEach(w=>[0,1].forEach(i=>setPiece(w,i,null))); setHand("p","—"); setHand("d","—"); setVerdict("");
+    renderBets(); controlsBet(); setHint(mode==="standoff"?"Tap a chip, tap Ante to bet, then Deal.":"Tap a chip, tap the Duel spot to bet, then Deal."); }
+  function rebet(){ const want=totalLast(); if(want>bank){ setHint("Not enough bankroll to repeat."); return; }
+    newHand(); spotsOf().forEach(k=>{ if(lastBets[k]){ bank-=lastBets[k]; bets[k]=lastBets[k]; } });
+    renderBank(); renderBets(); controlsBet(); setHint("Same bets loaded — Deal when ready."); }
+
+  /* ---- mode switch ---- */
+  function setMode(m){ if(phase==="decide"||phase==="gambit") return; mode=m; bets={}; lastBets={}; betOrder=[];
+    $("modeStandoff").classList.toggle("on",m==="standoff"); $("modeDuel").classList.toggle("on",m==="duel");
+    $("spotsStandoff").classList.toggle("hide",m!=="standoff"); $("spotsDuel").classList.toggle("hide",m!=="duel");
+    $("rulesStandoff").classList.toggle("hide",m!=="standoff"); $("rulesDuel").classList.toggle("hide",m!=="duel");
+    $("simMode").textContent=m==="standoff"?"Standoff":"Classic Duel"; $("simTarget").textContent=m==="standoff"?"6.48%":"4.17%";
+    renderSquares(); renderMath(); simReset(); newHand(); }
+
+  /* ---- edge simulator (mode-aware) ---- */
+  const sparkData=[]; let simAnte=0, simNet=0, simRunning=false, simGen=0;
   const cv=$("spark"), cx=cv.getContext("2d");
-  function drawSpark(){
-    if(!cx) return;
-    const W=cv.width,H=cv.height; cx.clearRect(0,0,W,H);
-    const target=4.16667, lo=2.5, hi=6.0;
+  function drawSpark(){ if(!cx) return; const W=cv.width,H=cv.height; cx.clearRect(0,0,W,H);
+    const target=mode==="standoff"?6.481:4.16667, lo=mode==="standoff"?4.5:2.5, hi=mode==="standoff"?8.5:6.0;
     const y=v=>H-8-((v-lo)/(hi-lo))*(H-16);
-    // target line
     cx.strokeStyle="rgba(159,208,179,.55)"; cx.setLineDash([5,4]); cx.lineWidth=1;
     cx.beginPath(); cx.moveTo(0,y(target)); cx.lineTo(W,y(target)); cx.stroke(); cx.setLineDash([]);
-    cx.fillStyle="rgba(159,208,179,.8)"; cx.font="11px Georgia"; cx.fillText("4.167%",6,y(target)-4);
+    cx.fillStyle="rgba(159,208,179,.85)"; cx.font="11px Georgia"; cx.fillText(target.toFixed(2)+"%",6,y(target)-4);
     if(sparkData.length<2) return;
     cx.strokeStyle="#e8c15a"; cx.lineWidth=2; cx.beginPath();
-    sparkData.forEach((v,i)=>{ const x=i/(sparkData.length-1)*W; const yy=Math.max(6,Math.min(H-6,y(v))); i?cx.lineTo(x,yy):cx.moveTo(x,yy); });
-    cx.stroke();
+    sparkData.forEach((v,i)=>{ const x=i/(sparkData.length-1)*W, yy=Math.max(6,Math.min(H-6,y(v))); i?cx.lineTo(x,yy):cx.moveTo(x,yy); });
+    cx.stroke(); }
+  function simReset(){ simGen++; simRunning=false; sparkData.length=0; simAnte=0; simNet=0; $("simEdge").textContent="—"; $("simCount").textContent="0"; drawSpark(); }
+  function simHand(){
+    if(mode==="duel"){ simAnte+=1; const p=draw(),d=draw();
+      if(p>d) simNet-=1; else if(p<d) simNet+=1; else { const p2=draw(),d2=draw(); if(p2>=d2) simNet-=1; else simNet+=2; } return; }
+    // standoff, optimal strategy
+    simAnte+=1; const p1=draw(),p2=draw(); const P=hand(p1,p2);
+    if(!shouldAdvance(P)){ simNet+=1; return; }                  // resign -> house keeps ante
+    const h1=draw(),h2=draw(); const H=hand(h1,h2);
+    if(!houseQual(H)) simNet-=1; else { const c=cmpHand(P,H); simNet+= c>0? -2 : 2; }  // tie->house
   }
-  function simReset(){ sparkData.length=0; simAnte=0; simNet=0; $("simEdge").textContent="—"; $("simCount").textContent="0"; drawSpark(); }
-  function runSim(N){
-    if(simRunning) return; simRunning=true;
-    let done=0; const chunk=25000;
-    const step=()=>{
-      const end=Math.min(chunk, N-done);
-      for(let k=0;k<end;k++){
-        simAnte+=1;
-        const p=Math.random()*6|0, d=Math.random()*6|0;
-        if(p>d) simNet-=1; else if(p<d) simNet+=1;
-        else { const p2=Math.random()*6|0, d2=Math.random()*6|0; if(p2>=d2) simNet-=1; else simNet+=2; }
-      }
-      done+=end;
-      const edge=simNet/simAnte*100;
-      sparkData.push(edge); if(sparkData.length>240) sparkData.shift();
-      $("simEdge").textContent=edge.toFixed(3)+"%";
-      $("simCount").textContent=fmt(simAnte);
-      drawSpark();
-      if(done<N) (window.requestAnimationFrame||setTimeout)(step); else simRunning=false;
-    };
-    step();
-  }
+  function runSim(N){ if(simRunning) return; simRunning=true; const gen=simGen; let done=0; const chunk=25000;
+    const step=()=>{ if(gen!==simGen){ simRunning=false; return; }   // cancelled by reset/mode switch
+      const end=Math.min(chunk,N-done); for(let k=0;k<end;k++) simHand(); done+=end;
+      const edge=simNet/simAnte*100; sparkData.push(edge); if(sparkData.length>240) sparkData.shift();
+      $("simEdge").textContent=edge.toFixed(3)+"%"; $("simCount").textContent=fmt(simAnte); drawSpark();
+      if(done<N)(window.requestAnimationFrame||setTimeout)(step); else simRunning=false; };
+    step(); }
 
-  /* ---------- wiring ---------- */
+  /* ---- chips ---- */
+  function renderTray(){ const t=$("tray"); [...t.querySelectorAll(".chip")].forEach(e=>e.remove());
+    CHIPS.slice().reverse().forEach(c=>{ const b=document.createElement("button"); b.className="chip"+(c.v===chip?" sel":"");
+      b.style.setProperty("--c",c.c); b.innerHTML="<span>"+(c.v>=1000?(c.v/1000)+"K":c.v)+"</span>";
+      b.onclick=()=>{ chip=c.v; renderTray(); }; t.insertBefore(b,t.firstChild); }); }
+
+  /* ---- wiring ---- */
   document.querySelectorAll(".spot").forEach(s=> s.onclick=()=>addBet(s.dataset.spot));
   $("btnUndo").onclick=undoBet; $("btnClear").onclick=clearBets; $("btnRepeat").onclick=rebet;
+  $("modeStandoff").onclick=()=>setMode("standoff"); $("modeDuel").onclick=()=>setMode("duel");
   $("btnSound").onclick=()=>{ soundOn=!soundOn; $("btnSound").textContent=soundOn?"🔊":"🔇"; if(soundOn) sfx.chip(); };
-  $("btnReset").onclick=()=>{ bank=START; jackpot=JACK_SEED; stats={hands:0,wager:0,ante:0,net:0,gambit:0,jack:0};
+  $("btnReset").onclick=()=>{ bank=START; jackpot=JACK_SEED; stats={hands:0,wager:0,ante:0,net:0,decide:0,jack:0};
     renderBank(); renderJackpot(); renderStats(); newHand(); setHint("Bankroll reset to ₾1,000."); };
   $("btnRules").onclick=()=>$("modal").classList.add("show");
   $("modalClose").onclick=()=>$("modal").classList.remove("show");
@@ -582,7 +611,7 @@
   document.querySelectorAll(".simbtns button[data-n]").forEach(b=> b.onclick=()=>runSim(+b.dataset.n));
   $("simReset").onclick=simReset;
 
-  renderTray(); renderBank(); renderJackpot(); renderBets(); renderStats(); controlsBet(); drawSpark();
+  renderSquares(); renderTray(); renderBank(); renderJackpot(); renderBets(); renderStats(); renderMath(); controlsBet(); drawSpark();
 })();
 </script>
 </body>
